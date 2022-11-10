@@ -1,7 +1,8 @@
 import express from 'express'
 const router = express.Router()
-import testActions from '../actions/api/test.js'
+import noteActions from '../actions/api/notes.js'
 
-router.get('/', testActions.homepage)
+router.get('/', noteActions.homepage)
+router.get('/newNote', noteActions.saveNote)
 
 export default router;
