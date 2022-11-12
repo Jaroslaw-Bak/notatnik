@@ -6,38 +6,61 @@ class noteActions {
     }
 
     saveNote(req, res){
-        // const newNote = new Note({
-        //     title: 'Zrobić zakupy',
-        //     body: 'mleko, jaja, woda'
-        // })
-        
-        // newNote.save().then(() => {
-        //     console.log('Notatka została stworzona')
-        // })
         const title = req.body.title;
         const body = req.body.body;
-        res.send('Notatka została stworzona. Tytuł: ' + title + 'treść: ' + body)
+        const note = new Note({
+            title,
+            body
+        })
+        note.save((err) => {
+            err ? res.status(422).json({message: err.message}): 
+            res.status(201).json(note)
+        })
     }
 
+    // można przerobić na asnc / await
     getAllNotes(req, res){
-       // pobbieranie notatek
-        res.send('pobieranie notatek')
+        Note.find({}, (err, data) => {
+            if (err) {
+                return res.status(500).json({message: err.message})
+            } else
+            res.status(200).json(data)
+        })  
     }
 
     getNote(req, res){
         // pobieranie notatki
-         res.send('pobieranie notatki')
+        const id = req.params.id
+        Note.findOne({_id: id}, (err, data) => {
+            if (err) {
+                return res.status(500).json({message: err.message})
+            } else
+            res.status(200).json(data)
+        })
      }
 
      updateNote(req, res){
+        const id = req.params.id
+        const title = req.body.title;
+        const body = req.body.body;
+        Note.findOne({_id: id}, (err, note) => {
+            err ? console.log(err) :
+                note.title = title,
+                note.body = body
+            note.save();
+            res.status(201).json(note)
+        } )
         // aktualizowanie notatki
-         res.send('aktualizowanie notatki')
+         
      }
 
      deleteNote(req, res){
         // usuwanie notatki
         const id = req.params.id
-         res.send('usuwanie notatki ID: ' + id)
+        Note.deleteOne({_id: id}, () => {
+            res.sendStatus(204)
+        })
+        
      }
 }
 

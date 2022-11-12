@@ -1,8 +1,18 @@
 import mongoose from "mongoose"
 
-const Note = mongoose.model('Note', {
-    title: String,
-    body: String
+
+const NoteSchema = mongoose.Schema({
+    title: {
+        type: String,
+        required: true,
+    },
+    body: {
+        type: String,
+        required: true,
+    },
 })
+
+
+const Note = mongoose.model('Note', NoteSchema);
 
 export default Note;
