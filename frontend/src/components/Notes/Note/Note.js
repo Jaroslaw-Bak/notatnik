@@ -1,13 +1,29 @@
+import { useState } from "react";
 
-const Note = ({title, body}) => {
+const Note = (props) => {
+
+    const [showDesc, setShowDesc] = useState(false)
+
+    const toggleDesc = () => {
+        setShowDesc(!showDesc);
+    }
+
+    const editHandler = () => {
+        props.onEdit({ 
+          title: props.title, 
+          body: props.body, 
+          _id: props.id 
+        });
+      }
+
     return (
         <div className="note">
-            <p>{title}</p>
-            <div className="description">
-                {body}
-            </div>
-            <button>edytuj</button>
-            <button className="delete" >usuń</button>
+            <p onClick={toggleDesc}>{props.title}</p>
+            {showDesc && (
+                <div className="description">{props.body}</div>
+            )}
+            <button onClick={editHandler}>edytuj</button>
+            <button className="delete" onClick={() => props.onDelete(props.id)}>usuń</button>
         </div>
     )
 }
