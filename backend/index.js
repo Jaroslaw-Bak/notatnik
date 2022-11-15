@@ -1,13 +1,13 @@
 import express from 'express'
 const app = express()
-import config from './config.js'
-import apiRouter from './routes/api.js'
+import config from './app/config.js'
+import apiRouter from './app/routes/api.js'
 import bodyParser from 'body-parser'
 import cors from 'cors'
 
 
 // db
-import './db/mongoose.js'
+import './app/db/mongoose.js'
 
 // parsery 
 //Content-type: aplication/json

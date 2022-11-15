@@ -5,6 +5,9 @@ import NewNote from '../NewNote/NewNote';
 import EditNote from '../EditNote/EditNote';
 import Modal from 'react-modal';
 import axios from '../../axios'
+import {NotificationContainer, NotificationManager} from 'react-notifications';
+import 'react-notifications/lib/notifications.css';
+
 
 const Notes = () => {
 
@@ -32,11 +35,17 @@ const Notes = () => {
     async function addNote(note) {
         const tempNotes = [...notes];
         // add to backend
-        const response = await axios.post('/notes', note)
-        const NewNote = response.data
-        // add to frontend
-        tempNotes.push(NewNote);
-        setNotes(tempNotes);
+        
+        try {
+          const response = await axios.post('/notes', note)
+          const NewNote = response.data
+          // add to frontend
+          tempNotes.push(NewNote);
+          setNotes(tempNotes);
+        } catch  (err) {
+          NotificationManager.error(err.response.data.message);
+        }
+
       }
     
       async function editNoteFunc(note) {
@@ -63,6 +72,7 @@ const Notes = () => {
     
     return (
         <div>
+          <NotificationContainer />
           <p>Moje notatki:</p>
 
         <NewNote
